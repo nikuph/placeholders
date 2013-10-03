@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Make placeholders</title>
+  <style>
+    form { width:50%; margin:50px auto; padding:5%; background:#293d47; }
+    img { display:block; width:100%; height:auto; margin-bottom:25px; }
+    fieldset { margin:0; border:0; padding:0; font-size:0; }
+    fieldset > * { font-size:11px; }
+    input { box-sizing:border-box; padding:3px 5px; border:1px solid #666; background-color:#fff; font-size:11px; }
+    input[type=text] { width:48%; margin:0 0 10px; }
+    input[type=text]:nth-child(2n+1) { margin-right:4%; }
+    input[type=submit] { width:100%; margin:0; }
+  </style>
+</head>
+<body>
+  <form id="input">
+    <img id="output" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAJCAYAAAA7KqwyAAAAGUlEQVQoU2OUeh3zn4ECwDhqAMNoGDAwAADzHBVqxC/ocgAAAABJRU5ErkJggg==" alt="output" />
+    <fieldset>
+      <input type="text" name="w" placeholder="width" />
+      <input type="text" name="h" placeholder="height" />
+      <input type="text" name="r" placeholder="red" />
+      <input type="text" name="g" placeholder="green" />
+      <input type="text" name="b" placeholder="blue" />
+      <input type="text" name="a" placeholder="alpha" />
+      <input type="submit" name="d" value="draw" />
+    </fieldset>
+  </form>
+
+  <script type="text/javascript">
+    !function() {
+      var output = document.getElementById("output");
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      var w, h, r, g, b, a;
+
+      var draw = function(e) {
+        e.preventDefault();
+
+        w = parseInt(this.w.value, 10);
+        w = !isNaN(w) ? w : 16;
+        h = parseInt(this.h.value, 10);
+        h = !isNaN(h) ? h : 9;
+        r = parseInt(this.r.value, 10);
+        r = !isNaN(r) ? r : 26;
+        g = parseInt(this.g.value, 10);
+        g = !isNaN(g) ? g : 235;
+        b = parseInt(this.b.value, 10);
+        b = !isNaN(b) ? b : 92;
+        a = parseFloat(this.a.value, 10);
+        a = !isNaN(a) ? a : 1;
+
+        canvas.width = w;
+        canvas.height = h;
+
+        ctx.fillStyle = "rgba(" + [r, g, b, a].join() + ")";
+        ctx.fillRect(0, 0, w, h);
+
+        output.src = canvas.toDataURL("image/png");
+
+        this.d.blur();
+      };
+
+      document.getElementById("input").addEventListener("submit", draw);
+    }();
+  </script>
+</body>
+</html>
